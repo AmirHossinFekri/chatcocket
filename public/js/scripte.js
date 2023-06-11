@@ -18,7 +18,13 @@ chatForm.addEventListener('submit',(e)=>{
     }
 });
 
+massageInput.addEventListener('keypress',()=>{
+    socket.emit("typing",{name:"امیر"});
+});
+
 socket.on('chat massage',data=>{
+    feedback.innerHTML="";
+
     chatbbox.innerHTML += `                <li class="msg-bubble">
               <div class="msg-info">
                   <div class="msg-info-time">12:46</div>
@@ -29,4 +35,8 @@ socket.on('chat massage',data=>{
                 ${data.massage}
               </div>
             </li>`
+})
+
+socket.on('typing',data=>{
+    feedback.innerHTML=data.name +"در حال نوشتن است"
 })

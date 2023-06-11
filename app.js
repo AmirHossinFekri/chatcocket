@@ -24,4 +24,8 @@ io.on('connection',socket=>{
     socket.on('chat massage',data=>{
         io.sockets.emit('chat massage',data);
     });
+    
+    socket.on('typing' ,data=>{
+        socket.broadcast.emit("typing",data);
+    })
 });
