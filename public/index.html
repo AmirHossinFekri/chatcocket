@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chat</title>
-    <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ورود نام کاربری</title>
+  <link rel="stylesheet" href="./css/style.css">
 </head>
-<body>
-    <section class="msger">
-        <header class="msger-header">
-          <div class="msger-header-title">
-            <i class="fas fa-comment-alt"></i> چت ساده
-          </div>
-          <div id="feedback"></div>
-          <div class="msger-header-options">
-            <span><i class="fas fa-cog"></i></span>
-          </div>
-        </header>
-      
-        <main class="msger-chat">
-          <div class="msg right-msg">
-            <div
-             class="msg-img"
-             style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
-            ></div>
-            <ul id="chat-box">
+<body style="background-color: aqua;">
+  
+  <div class="container" style="background-color: aqua;">
+    <h1 style="margin: 26px;">نام کاربری خود را وارد کنید</h1>
+    <form id="nicknameForm">
+      <div class="group">      
+        <input type="text" required name="nickname" id="nicknameInput" autofocus style="background-color: aqua;">
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>نام کاربری</label>
+      </div>
+      <button type="submit">ورود</button>
+    </form>
+    
+  </div>
+  <script>
 
-            </ul>
-          </div>
-        </main>
-        <form class="msger-inputarea" id="chatForm">
-            <button type="submit" id="btn_submit" class="msger-send-btn">ارسال</button>
-            <input type="text" dir="rtl" name="massage" id="massageInput" class="msger-input" placeholder="پیام خود را وارد کنید ....">
-        </form>
-      </section>
-</body>
-<script src="./js/socket.io.min.js"></script>
-<script src="./js/scripte.js"></script>
+    const nicknameInput=document.getElementById('nicknameInput'),
+      nicknameForm=document.getElementById('nicknameForm');
+      
+  nicknameForm.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(nicknameInput.value){
+        localStorage.setItem('nickname',nicknameInput.value);
+        window.location.replace("./chat.html");
+    }
+})
+  </script>
+</body >
 </html>
