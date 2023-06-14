@@ -7,8 +7,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>chat</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/bootstrap/bootstrap.min.css">
 </head>
 <body>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Open modal for @mdo</button>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Recipient:</label>
+            <input type="text" class="form-control" id="recipient-name">
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Message:</label>
+            <textarea class="form-control" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Send message</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     <section class="msger">
         <header class="msger-header">
           <div class="msger-header-title">
@@ -20,9 +51,10 @@
           </div>
         </header>
       
-        <main class="msger-chat">
+        <main class="msger-chat" id="chat-container">
           <div class="msg right-msg">
             <div
+             
              class="msg-img"
              style="background-image: url(https://image.flaticon.com/icons/svg/145/145867.svg)"
             ></div>
@@ -36,7 +68,27 @@
             <input type="text" dir="rtl" name="massage" id="massageInput" class="msger-input" placeholder="پیام خود را وارد کنید ....">
         </form>
       </section>
+      <section class="msgeronlineUser">
+        <header class="msger-header-onlineUser center-text">
+          <div class="msger-header-title center-text">
+           <span class="center-text">
+             کاربران آنلاین
+           </span>
+          </div>
+          <div class="msger-header-options">
+            <span><i class="fas fa-cog"></i></span>
+          </div>
+        </header>
+      
+        <main class="msger-chat">
+            <ul id="online-users-box">
+
+            </ul>
+        </main>
+
+      </section>
 </body>
 <script src="./js/socket.io.min.js"></script>
+<script src="./js/bootstrap/bootstrap.min.js"></script>
 <script src="./js/scripte.js"></script>
 </html>

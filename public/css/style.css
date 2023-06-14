@@ -45,7 +45,32 @@
     background: var(--msger-bg);
     box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
   }
+  .msgeronlineUser{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    width: 12%;
+    max-width: 867px;
+    margin: 25px 10px;
+    height: calc(100% - 50px);
+    border: var(--border);
+    border-radius: 5px;
+    background: var(--msger-bg);
+    box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
+  }
+  .center-text{
+    text-align: center;
+    
+  }
   
+  .msger-header-onlineUser {
+    display: block;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: var(--border);
+    background: #eee;
+    color: #666;
+  }
   .msger-header {
     display: flex;
     justify-content: space-between;
@@ -55,6 +80,14 @@
     color: #666;
   }
   
+  .bubble-online-user{
+    background-color: #579ffb; 
+    margin-bottom: 12px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 15px #5264AE ;
+    padding: 6px;
+    color: #c3cfe2;
+  }
   .msger-chat {
     flex: 1;
     overflow-y: auto;

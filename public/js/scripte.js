@@ -5,7 +5,8 @@ const socket=io();
 const massageInput=document.getElementById("massageInput"),
     chatForm=document.getElementById("chatForm"),
     chatbbox=document.getElementById('chat-box'),
-    feedback=document.getElementById('feedback');
+    feedback=document.getElementById('feedback'),
+    chatcontaner=document.getElementById('chat-container');
 
 
 const nickname=localStorage.getItem('nickname');
@@ -33,6 +34,18 @@ massageInput.addEventListener('keypress',()=>{
     socket.emit("typing",{name:nickname});
 });
 
+const OnlineUser=document.getElementById('online-users-box');
+socket.on('online',data=>{
+    OnlineUser.innerHTML="";
+    Object.values(data).forEach(value=>{
+        OnlineUser.innerHTML+=`
+        <li class="bubble-online-user">
+            <div class="center-text">${value}</div>
+        </li>
+        `
+    })
+});
+
 socket.on('chat massage',data=>{
     feedback.innerHTML="";
 
@@ -46,7 +59,8 @@ socket.on('chat massage',data=>{
               <div class="msg-text">
                 ${data.massage}
               </div>
-            </li>`
+            </li>`;
+    chatcontaner.scrollTop=chatcontaner.scrollHeight-chatcontaner.clientHeight;
 })
 
 socket.on('typing',data=>{

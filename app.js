@@ -13,16 +13,20 @@ const PORT = process.env.PORT||3000;
 server.listen(PORT,()=>{
     console.log(`server is running on port ${PORT}`);
 });
-const onlineUser=[];
+const onlineUser={};
+
 io.on('connection',socket=>{
 
     socket.on('login',data=>{
         console.log(`${data} connected !`);
-        onlineUser.push(data);
+        onlineUser[socket.id]=data;
         console.log(onlineUser);
+        io.sockets.emit('online',onlineUser);
     })
     socket.on("disconnect" , ()=>{
         console.log("user disconected !! ");
+        delete onlineUser[socket.id];
+        io.sockets.emit('online',onlineUser);
     });
 
     socket.on('chat massage',data=>{
