@@ -87,6 +87,7 @@
     box-shadow: 5px 5px 15px #5264AE ;
     padding: 6px;
     color: #c3cfe2;
+    list-style-type: none;
   }
   .msger-chat {
     flex: 1;

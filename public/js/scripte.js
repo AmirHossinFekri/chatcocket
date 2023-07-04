@@ -6,9 +6,14 @@ const massageInput=document.getElementById("massageInput"),
     chatForm=document.getElementById("chatForm"),
     chatbbox=document.getElementById('chat-box'),
     feedback=document.getElementById('feedback'),
-    chatcontaner=document.getElementById('chat-container');
+    chatcontaner=document.getElementById('chat-container'),
+    pvchat=document.getElementById('pvChat'),
+    pvChatForm = document.getElementById("pvChatForm"),
+    pvMessageInput = document.getElementById("pvMessageInput"),
+    modalTitle = document.getElementById("modalTitle"),
+    pvChatMessage = document.getElementById("pvChatMassage");
 
-
+var socketId;
 const nickname=localStorage.getItem('nickname');
 //emit Event 
 
@@ -35,15 +40,21 @@ massageInput.addEventListener('keypress',()=>{
 });
 
 const OnlineUser=document.getElementById('online-users-box');
-socket.on('online',data=>{
+socket.on('online',users=>{
     OnlineUser.innerHTML="";
-    Object.values(data).forEach(value=>{
+    console.log(users);
+    for(var socketID in users){
         OnlineUser.innerHTML+=`
         <li class="bubble-online-user">
-            <div class="center-text">${value}</div>
+            <button type="button" class="btn justify-content-center d-flex" data-bs-toggle="modal" data-bs-target="#pvChat" 
+            data-bs-id="${socketID}" data-bs-client="${users[socketID]}">
+                <div class="center-text">${users[socketID]}</div>
+            </button>
         </li>
-        `
-    })
+        `;
+        console.log(socketID);
+        console.log(users[socketID]);
+    }
 });
 
 socket.on('chat massage',data=>{
@@ -67,3 +78,14 @@ socket.on('typing',data=>{
     feedback.innerHTML=data.name +" در حال نوشتن است "
      
 })
+
+pvchat.addEventListener("show.bs.modal", function (e) {
+    var button = e.relatedTarget;
+    var user = button.getAttribute("data-bs-client");
+    socketId = button.getAttribute("data-bs-id");
+
+    console.log(user);
+
+    modalTitle.innerHTML =  user+" : ارسال پیام شخصی به ";
+    pvChatMessage.style.display="none";
+});
