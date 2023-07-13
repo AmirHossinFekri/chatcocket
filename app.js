@@ -18,9 +18,8 @@ const onlineUser={};
 io.on('connection',socket=>{
 
     socket.on('login',data=>{
-        console.log(`${data} connected !`);
+        console.log(`${data} connected with id : ${socket.id}`);
         onlineUser[socket.id]=data;
-        console.log(onlineUser);
         io.sockets.emit('online',onlineUser);
     })
     socket.on("disconnect" , ()=>{
@@ -35,5 +34,9 @@ io.on('connection',socket=>{
     
     socket.on('typing' ,data=>{
         socket.broadcast.emit("typing",data);
-    })
+    });
+
+    socket.on('pvChat',data=>{
+        io.to(data.to).emit('pvChat',data);
+    });
 });

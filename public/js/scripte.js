@@ -35,6 +35,23 @@ chatForm.addEventListener('submit',(e)=>{
     }
 });
 
+pvChatForm.addEventListener('submit',e=>{
+    e.preventDefault();
+
+    socket.emit('pvChat',{
+        massage:massageInput.value,
+        name:nickname,
+        to:socketId,
+        from:socket.id,
+    })
+
+    var truck_modal = document.querySelector('#pvChat');
+    var modal = bootstrap.Modal.getInstance(truck_modal);    
+    modal.hide();
+
+    pvMessageInput.value="";
+});
+
 massageInput.addEventListener('keypress',()=>{
     socket.emit("typing",{name:nickname});
 });
@@ -82,10 +99,19 @@ socket.on('typing',data=>{
 pvchat.addEventListener("show.bs.modal", function (e) {
     var button = e.relatedTarget;
     var user = button.getAttribute("data-bs-client");
-    socketId = button.getAttribute("data-bs-id");
-
-    console.log(user);
-
+    socketId = button.getAttribute("data-bs-id") ;
+    
     modalTitle.innerHTML =  user+" : ارسال پیام شخصی به ";
     pvChatMessage.style.display="none";
+});
+socket.on('pvChat',(data)=>{
+    var modal1 = new bootstrap.Modal(document.getElementById('pvChat'));
+    modal1.show();
+    
+    socketId=data.from;
+    modalTitle.innerHTML=" دریافت پیام از "+data.name;
+    console.log(data.massage);
+    pvChatMessage.style.display="block";
+    pvChatMessage.innerHTML=data.name + " : "+data.massage;
+
 });
