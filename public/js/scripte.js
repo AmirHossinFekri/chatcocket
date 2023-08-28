@@ -14,10 +14,11 @@ const massageInput=document.getElementById("massageInput"),
     pvChatMessage = document.getElementById("pvChatMassage");
 
 var socketId;
-const nickname=localStorage.getItem('nickname');
-//emit Event 
 
-socket.emit('login',nickname);
+const nickname=localStorage.getItem('nickname');
+const roomNumber=localStorage.getItem('room');
+//*  emit Event 
+socket.emit('login',{nickname,roomNumber});
 
 chatForm.addEventListener('submit',(e)=>{
     e.preventDefault();
@@ -29,7 +30,8 @@ chatForm.addEventListener('submit',(e)=>{
         socket.emit('chat massage',{
             massage:massageInput.value,
             username:nickname,
-            date:hoursAndMinutes
+            date:hoursAndMinutes,
+            roomNumber,
         });
         massageInput.value="";
     }
@@ -37,9 +39,9 @@ chatForm.addEventListener('submit',(e)=>{
 
 pvChatForm.addEventListener('submit',e=>{
     e.preventDefault();
-
+    
     socket.emit('pvChat',{
-        massage:massageInput.value,
+        massage:pvMessageInput.value,
         name:nickname,
         to:socketId,
         from:socket.id,
@@ -53,24 +55,28 @@ pvChatForm.addEventListener('submit',e=>{
 });
 
 massageInput.addEventListener('keypress',()=>{
-    socket.emit("typing",{name:nickname});
+    socket.emit("typing",{name:nickname,roomNumber});
 });
 
 const OnlineUser=document.getElementById('online-users-box');
 socket.on('online',users=>{
     OnlineUser.innerHTML="";
-    console.log(users);
     for(var socketID in users){
+        console.log(users[socketID]);
+        if(roomNumber===users[socketID].roomNumber)
         OnlineUser.innerHTML+=`
         <li class="bubble-online-user">
-            <button type="button" class="btn justify-content-center d-flex" data-bs-toggle="modal" data-bs-target="#pvChat" 
-            data-bs-id="${socketID}" data-bs-client="${users[socketID]}">
-                <div class="center-text">${users[socketID]}</div>
+            <button type="button"
+            class="btn justify-content-center d-flex"
+            ${users[socketID].nickname=== nickname ?"disabled":""}
+            data-bs-toggle="modal" 
+            data-bs-target="#pvChat" 
+            data-bs-id="${socketID}"  data-bs-client="${users[socketID].nickname}">
+                <div class="center-text">
+                ${users[socketID].nickname}</div>
             </button>
         </li>
         `;
-        console.log(socketID);
-        console.log(users[socketID]);
     }
 });
 
@@ -92,25 +98,34 @@ socket.on('chat massage',data=>{
 })
 
 socket.on('typing',data=>{
+    if(roomNumber===data.roomNumber)
     feedback.innerHTML=data.name +" در حال نوشتن است "
      
 })
 
+let flagMassage=false;
+
 pvchat.addEventListener("show.bs.modal", function (e) {
-    var button = e.relatedTarget;
-    var user = button.getAttribute("data-bs-client");
-    socketId = button.getAttribute("data-bs-id") ;
+
+    if(!flagMassage){
+        var button = e.relatedTarget;
     
-    modalTitle.innerHTML =  user+" : ارسال پیام شخصی به ";
-    pvChatMessage.style.display="none";
+    
+        var user = button.getAttribute("data-bs-client");
+        socketId = button.getAttribute("data-bs-id") ;
+        
+        modalTitle.innerHTML =  user+" : ارسال پیام شخصی به ";
+        pvChatMessage.style.display="none";
+    }
+    
+    flagMassage=false;
 });
 socket.on('pvChat',(data)=>{
+    flagMassage=true;
     var modal1 = new bootstrap.Modal(document.getElementById('pvChat'));
     modal1.show();
-    
     socketId=data.from;
     modalTitle.innerHTML=" دریافت پیام از "+data.name;
-    console.log(data.massage);
     pvChatMessage.style.display="block";
     pvChatMessage.innerHTML=data.name + " : "+data.massage;
 

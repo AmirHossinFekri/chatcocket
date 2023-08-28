@@ -18,8 +18,10 @@ const onlineUser={};
 io.on('connection',socket=>{
 
     socket.on('login',data=>{
-        console.log(`${data} connected with id : ${socket.id}`);
-        onlineUser[socket.id]=data;
+        console.log(`${data.nickname} connected with id : ${socket.id}`);
+        socket.join(data.roomNumber)
+        console.log(data.roomNumber);
+        onlineUser[socket.id]={nickname:data.nickname,roomNumber:data.roomNumber};
         io.sockets.emit('online',onlineUser);
     })
     socket.on("disconnect" , ()=>{
@@ -29,7 +31,7 @@ io.on('connection',socket=>{
     });
 
     socket.on('chat massage',data=>{
-        io.sockets.emit('chat massage',data);
+        io.to(data.roomNumber).emit('chat massage',data);
     });
     
     socket.on('typing' ,data=>{
@@ -37,6 +39,7 @@ io.on('connection',socket=>{
     });
 
     socket.on('pvChat',data=>{
+        console.log(data);
         io.to(data.to).emit('pvChat',data);
     });
 });

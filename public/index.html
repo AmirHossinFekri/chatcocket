@@ -19,6 +19,12 @@
         <span class="bar"></span>
         <label>نام کاربری</label>
       </div>
+      <select class="w-25 form-select form-select-lg mb-3" name="chatroom" id="chatroom" aria-label=".form-select-lg example">
+        <option selected>Open this select menu</option>
+        <option value="room1">اتاق یک </option>
+        <option value="room2">اتاق دو</option>
+        <option value="room3">اتاق سه</option>
+      </select>
       <button class="btn btn-primary" type="submit">ورود</button>
     </form>
     
@@ -26,11 +32,13 @@
   <script>
 
     const nicknameInput=document.getElementById('nicknameInput'),
-      nicknameForm=document.getElementById('nicknameForm');
+      nicknameForm=document.getElementById('nicknameForm'),
+      chatroom=document.getElementById('chatroom');
       
   nicknameForm.addEventListener('submit',(e)=>{
     e.preventDefault();
     if(nicknameInput.value){
+        localStorage.setItem('room',chatroom.value)
         localStorage.setItem('nickname',nicknameInput.value);
         window.location.replace("./chat.html");
     }
